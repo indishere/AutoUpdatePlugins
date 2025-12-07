@@ -1,17 +1,17 @@
 name: AutoUpdatePlugins
 version: '${project.version}'
-main: io.github.aplini.autoupdateplugins.AutoUpdatePlugins
+main: io.github.ind.autoupdateplugins.AutoUpdatePlugins
 api-version: '1.16'
 folia-supported: true
 prefix: AUP
-author: ApliNi
+author: IND
 
 commands:
   aup:
-    description: 使用插件命令
+    description: Use the plugin commands
     permission: aup.command
 
 permissions:
   aup.command:
-    description: 使用插件命令
+    description: Use the plugin commands
     default: op

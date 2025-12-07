@@ -1,4 +1,3 @@
-
 # How long to wait for the first update to run after the server has finished booting (seconds)
 startupDelay: 64
 

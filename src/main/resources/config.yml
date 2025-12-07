@@ -1,159 +1,160 @@
-
-# 服务器启动完成后等待多长时间开始运行第一次更新 (秒
+# How long to wait after the server finishes starting before running the first update (seconds)
 startupDelay: 64
 
-# 第一次运行完成后以此频率重复运行更新 (秒, 修改后需要重启
-startupCycle: 14400 # 4小时
+# After the first update finishes, repeat updates at this interval (seconds; requires restart to apply changes)
+startupCycle: 14400  # 4 hours
 
-# 插件更新目录, 设置与 bukkit.yml 中的一致
-# 注意路径最后一定是 "/"
+# Directory used for plugin updates. Must match the path in bukkit.yml
+# Make sure the path ends with "/"
 updatePath: './plugins/update/'
 
-# 下载缓存目录, 无需修改
-# 新的 .jar 文件会先下载到缓存目录, 验证完成后再移动到插件更新目录
+# Download cache directory — usually no need to change this.
+# New .jar files are downloaded here first. After verification, they are moved into the update directory.
 tempPath: './plugins/AutoUpdatePlugins/temp/'
 
-# 服务器正在运行的插件或文件的目录, 用于哈希检查
+# Directory of plugins currently running on the server (used for hash checks)
 filePath: './plugins/'
 
-# 启用上一个更新记录并通过这些信息检查更新 (temp.yml)
+# Enable record of previous updates and use that information to check updates (temp.yml)
 enablePreviousUpdate: true
 
-# 文件完整性检查, 只对 .jar / .zip 等文件有效. 尝试以压缩包的形式打开, 若失败则表示不完整
+# File integrity check, only works for .jar / .zip files.
+# The file is tested by attempting to open it as a zip archive. If it fails, it is considered incomplete.
 zipFileCheck: true
-# 如果 file 配置与此正则匹配, 则启用 zip 完整性检查, 否则不会启用
+
+# If a file matches this regex, zip integrity check will be applied
 zipFileCheckList: '\.(?:jar|zip)$'
 
-# 如果下载后的文件哈希与更新目录中待更新的文件 (或者服务器正在运行的文件) 哈希值一致则不移动到更新目录 (MD5
+# If the downloaded file’s MD5 hash matches an existing file in the update folder (or the running plugin),
+# it will not be moved to the update directory.
 ignoreDuplicates: true
 
-# 是否启用 SSL 验证, 通常情况请勿关闭
+# Whether to enable SSL certificate verification. Normally do NOT disable.
 sslVerify: true
 
-# 设置网络代理
+# Network proxy configuration
 proxy:
-  type: DIRECT # DIRECT | HTTP | SOCKS
+  type: DIRECT  # DIRECT | HTTP | SOCKS
   host: '127.0.0.1'
   port: 7890
 
-# HTTP 请求中编辑请求头
+# Custom HTTP headers for network requests
 setRequestProperty:
   - name: 'User-Agent'
     value: 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36'
 
-# 启用哪些日志等级
+# Which log levels should be enabled
 logLevel:
-  - 'DEBUG'   # 用于调试, 可在测试完成后注释掉
-  - 'MARK'    # 与 DEBUG 相同, 显示绿色, 用于标记任务完成
-  - 'INFO'    # 输出日志
-  - 'WARN'    # 输出警告
-  - 'NET_WARN'  # 网络请求模块的警告
+  - 'DEBUG'      # For debugging; disable after testing
+  - 'MARK'       # Same as DEBUG but highlighted in green for marking tasks
+  - 'INFO'       # Prints normal logs
+  - 'WARN'       # Prints warnings
+  - 'NET_WARN'   # Warnings from the network module
 
-
-# 插件列表
-# URL 支持自动下载 `GitHub, Jenkins, SpigotMC, Modrinth, Bukkit, 鬼斩构建站 v2, MineBBS, CurseForge` 页面的插件, 其他链接将直接下载
-# 其中 `GitHub, Jenkins, Modrinth` 页面可以使用 get 参数下载指定文件
-# GitHub 链接可添加配置 `getPreRelease: true` 来下载最新的预发布版本
+# Plugin update list
+# URLs support automatic detection for:
+# GitHub, Jenkins, SpigotMC, Modrinth, Bukkit, Guizhan Build Station v2, MineBBS, CurseForge.
+# GitHub/Jenkins/Modrinth can use the "get" parameter to pick a specific file.
+# GitHub links can also use "getPreRelease: true" to download pre-release versions.
 list:
 
-  - file: 'AutoUpdatePlugins自动更新.jar'
-    url: https://github.com/ApliNi/AutoUpdatePlugins/
+  - file: 'AutoUpdatePlugins-v2.6.7.jar'
+    url: https://github.com/indishere/AutoUpdatePlugins/
 
-### 示例配置 ### 测试时注意 Yaml 格式
+### Example configuration — Pay attention to correct YAML formatting
 
-#  - file: 'EssentialsX.jar' # Github
-#    url: https://github.com/EssentialsX/Essentials
-#    get: 'EssentialsX-([0-9.]+)\.jar'  # 如果 GitHub/Jenkins 发布中存在多个文件, 则需要匹配其中一个, 否则下载第一个 (使用正则表达式
+# - file: 'EssentialsX.jar'      # GitHub
+#   url: https://github.com/EssentialsX/Essentials
+#   get: 'EssentialsX-([0-9.]+)\.jar'
 
-#  - file: 'EssentialsXChat.jar' # 匹配相同发布中的不同文件
-#    url: https://github.com/EssentialsX/Essentials
-#    get: 'EssentialsXChat-([0-9.]+)\.jar'
+# - file: 'EssentialsXChat.jar'  # Match different files in same release
+#   url: https://github.com/EssentialsX/Essentials
+#   get: 'EssentialsXChat-([0-9.]+)\.jar'
 
-#  - file: 'Geyser-Spigot.jar' # URL
-#    url: https://download.geysermc.org/v2/projects/geyser/versions/latest/builds/latest/downloads/spigot
+# - file: 'Geyser-Spigot.jar'    # Direct URL
+#   url: https://download.geysermc.org/v2/projects/geyser/versions/latest/builds/latest/downloads/spigot
 
-#  - file: 'ViaVersion-DEV.jar' # Jenkins
-#    url: https://ci.viaversion.com/job/ViaVersion-DEV/
+# - file: 'ViaVersion-DEV.jar'   # Jenkins
+#   url: https://ci.viaversion.com/job/ViaVersion-DEV/
 
-#  - file: 'ViaBackwards-DEV.jar'
-#    url: https://ci.viaversion.com/view/ViaBackwards/job/ViaBackwards-DEV/
+# - file: 'ViaBackwards-DEV.jar'
+#   url: https://ci.viaversion.com/view/ViaBackwards/job/ViaBackwards-DEV/
 
-#  - file: 'CoreProtect.jar' # Modrinth
-#    url: https://modrinth.com/plugin/coreprotect/
+# - file: 'CoreProtect.jar'      # Modrinth
+#   url: https://modrinth.com/plugin/coreprotect/
 
-#  - file: 'UseTranslatedNames翻译物品名.jar'
-#    url: https://modrinth.com/plugin/usetranslatednames
+# - file: 'UseTranslatedNames.jar'
+#   url: https://modrinth.com/plugin/usetranslatednames
 
-#  - file: 'HttpRequests网络请求.jar' # SpigotMC
-#    url: https://www.spigotmc.org/resources/http-requests.101253/
+# - file: 'HttpRequests.jar'     # SpigotMC
+#   url: https://www.spigotmc.org/resources/http-requests.101253/
 
-#  - file: 'Chunky区块预加载.jar' # MineBBS
-#    url: https://www.minebbs.com/resources/chunky-tps.7318/
+# - file: 'Chunky.jar'           # MineBBS
+#   url: https://www.minebbs.com/resources/chunky-tps.7318/
 
-#  - file: 'SF4_Slimefun4粘液科技.jar' # 鬼斩构建站 v2
-#    url: https://builds.guizhanss.com/StarWishsama/Slimefun4/master
+# - file: 'SF4_Slimefun4.jar'    # Guizhan Build Station v2
+#   url: https://builds.guizhanss.com/StarWishsama/Slimefun4/master
 
-#  - file: 'SF4_FluffyMachines蓬松科技.jar'
-#    url: https://builds.guizhanss.com/SlimefunGuguProject/FluffyMachines/master
+# - file: 'SF4_FluffyMachines.jar'
+#   url: https://builds.guizhanss.com/SlimefunGuguProject/FluffyMachines/master
 
-#  - file: 'Dynmap网页地图.jar'
-#    url: https://legacy.curseforge.com/minecraft/bukkit-plugins/dynmap
+# - file: 'Dynmap.jar'
+#   url: https://legacy.curseforge.com/minecraft/bukkit-plugins/dynmap
 
-#  # 可以像这样为每个文件添加配置
-#  # 如果 file 配置中包含路径, 则自动设置 path 参数
-#  - file: './serverConfig.yml'
-#    url: 'http://[::]:5212/serverConfig.yml'
+# - file: './serverConfig.yml'   # If the file path includes directories, the plugin automatically sets the path parameter
+#   url: 'http://[::]:5212/serverConfig.yml'
 
 
-### list 中的所有可用配置 ###
-# 除非你知道这是在做什么, 否则不要随意随意使用
-# String file;              // 文件名称
-# String url;               // 下载链接
-# String tempPath;          // 下载缓存路径, 默认使用全局配置
-# String updatePath;        // 更新存放路径, 默认使用全局配置
-# String filePath;          // 最终安装路径, 默认使用全局配置
-# String path;              // 同时覆盖 updatePath 和 filePath 配置
-# String get;               // 选择指定文件的正则表达式, 默认选择第一个. 仅限 GitHub, Jenkins, Modrinth
-# boolean getPreRelease;    // 允许下载预发布版本, 默认 false. 仅限 GitHub
-# boolean zipFileCheck;     // 启用 zip 文件完整性检查
-# boolean ignoreDuplicates; // 关闭哈希检查
+### All available configuration fields for "list" entries ###
+# Unless you fully understand what you're doing, don’t modify these casually.
+
+# String file;              # File name
+# String url;               # Download link
+# String tempPath;          # Temporary download path (defaults to global config)
+# String updatePath;        # Where updates are stored (defaults to global)
+# String filePath;          # Where the plugin installs the file (defaults to global)
+# String path;              # Overrides both updatePath and filePath
+# String get;               # Regex to select a specific file (GitHub/Jenkins/Modrinth only)
+# boolean getPreRelease;    # Allow GitHub pre-release download (default false)
+# boolean zipFileCheck;     # Enable zip integrity check
+# boolean ignoreDuplicates; # Disable hash comparison
 
 
-# 在这里编辑插件可能显示的消息
+# Messages displayed by the plugin
 message:
-  updateCheckIntervalTooLow: '### 更新检查间隔过低将造成性能问题! ###'
-  timer: '更新检查将在 %1 秒后运行, 并以每 %2 秒的间隔重复运行'
-  commandReloadOnUpdating: '当前正在运行更新, 配置重载将被推迟'
-  commandReloadOK: '已完成重载'
-  commandRepeatedRunUpdate: '已有一个未完成的更新正在运行'
-  commandUpdateStart: '更新开始运行!'
-  commandFullLog: '完整日志:'
-  commandStopUpdateIng: '正在停止当前更新... '
-  stopUpdate: '已停止当前更新'
-  repeatedRunUpdate: '### 更新程序重复启动或出现错误? ###'
-  updateStart: '[## 开始运行自动更新 ##]'
-  configErrList: '更新列表配置错误? '
-  configErrUpdate: '更新列表配置错误? 项目为空'
-  configErrMissing: '更新列表配置错误? 缺少基本配置'
-  updateChecking: '正在检查更新...'
-  updateErrParsingDUrl: '解析文件直链时出现错误, 将跳过此更新'
-  updateTempAlreadyLatest: '[缓存] 文件已是最新版本'
-  updateErrDownload: '下载文件时出现异常, 将跳过此更新'
-  updateZipFileCheck: '[Zip 完整性检查] 文件不完整, 将跳过此更新'
-  updateFileAlreadyLatest: '文件已是最新版本'
-  updateFulSizeDifference: '更新完成 [%1MB] -> [%2MB]'
-  updateFul: '[## 更新全部完成 ##]'
-  updateFulTime: '耗时: %1 秒'
-  updateFulFail: '失败: %1, '
-  updateFulUpdate: '更新: %1, '
-  updateFulOK: '成功: %1'
-  updateFulNetRequest: '网络请求: %1, '
-  updateFulDownloadFile: '下载文件: %1MB'
-  logReloadOK: '已完成重载'
-  debugGetVersion: '找到版本: %1'
-  debugNoFileMatching: '没有匹配的文件: %1'
-  debugNoRepositoryPath: '未找到存储库路径: %1'
-  debugErrUrlResolveNoID: 'URL 解析错误, 不包含插件 ID?: %1'
-  debugErrUrlResolveNoName: 'URL 解析错误, 未找到项目名称: %1'
-  debugErrNoID: '未找到项目 ID: %1'
-  urlInvalid: 'URL 无效或不规范: %1'
+  updateCheckIntervalTooLow: '### Warning: Update interval is too low and may impact performance! ###'
+  timer: 'Update check will run in %1 seconds and repeat every %2 seconds.'
+  commandReloadOnUpdating: 'An update is currently running. Reload will occur afterward.'
+  commandReloadOK: 'Configuration reloaded successfully.'
+  commandRepeatedRunUpdate: 'An update is already in progress.'
+  commandUpdateStart: 'Update started!'
+  commandFullLog: 'Full log:'
+  commandStopUpdateIng: 'Stopping current update...'
+  stopUpdate: 'Update stopped.'
+  repeatedRunUpdate: '### Update triggered twice or encountered an error. ###'
+  updateStart: '[## Starting automatic update ##]'
+  configErrList: 'Configuration error: update list may be invalid.'
+  configErrUpdate: 'Configuration error: update list is empty.'
+  configErrMissing: 'Configuration error: missing required fields.'
+  updateChecking: 'Checking for updates...'
+  updateErrParsingDUrl: 'Failed to parse download link. Skipping update.'
+  updateTempAlreadyLatest: '[Cache] File is already the latest version.'
+  updateErrDownload: 'Error downloading file. Skipping update.'
+  updateZipFileCheck: '[Zip Integrity Check] File is incomplete. Skipping update.'
+  updateFileAlreadyLatest: 'File is already up to date.'
+  updateFulSizeDifference: 'Update completed [%1MB] -> [%2MB].'
+  updateFul: '[## All updates completed ##]'
+  updateFulTime: 'Time taken: %1 seconds.'
+  updateFulFail: 'Failed: %1, '
+  updateFulUpdate: 'Updated: %1, '
+  updateFulOK: 'Successful: %1'
+  updateFulNetRequest: 'Network requests: %1, '
+  updateFulDownloadFile: 'Downloaded: %1MB'
+  logReloadOK: 'Reload completed successfully.'
+  debugGetVersion: 'Found version: %1'
+  debugNoFileMatching: 'No matching file found: %1'
+  debugNoRepositoryPath: 'Repository path not found: %1'
+  debugErrUrlResolveNoID: 'URL parsing error: missing plugin ID? %1'
+  debugErrUrlResolveNoName: 'URL parsing error: project name not found: %1'
+  debugErrNoID: 'Project ID not found: %1'
+  urlInvalid: 'URL is invalid or incorrectly formatted: %1'
